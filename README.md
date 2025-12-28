@@ -245,7 +245,7 @@ To run DOGI, simply execute the following from
 
 ```bash
 cd build
-./app/app DOGI
+sudo ./app/app DOGI
 ````
 
 This runs the full DOGI pipeline — it initializes the environment, replays the workload trace, trains the ML model (if needed), and executes DOGI’s data placement algorithm on top of the log-structured system.
