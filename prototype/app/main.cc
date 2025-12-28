@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
         latestModelDir.clear();
       }
     } else {
-      printf("[MLP] No existing model found; will use random weights until training completes.\n");
+      printf("[MLP] No existing model found\n");
       latestModelDir.clear();
     }
   }
@@ -282,9 +282,9 @@ int main(int argc, char *argv[]) {
     while (true) {
       std::unique_lock<std::mutex> lk(configMutex);
       configCv.wait(lk, [&]() { return shutdown.load() || modelTrainer.IsCollectingDone(); });
-      printf("Config worker woke up.\n");
-      printf("shutdown=%d, collectingDone=%d\n", shutdown.load(), modelTrainer.IsCollectingDone());
-      printf("!!!!!!!!!!!!!!!!!\n");
+      //printf("Config worker woke up.\n");
+      //printf("shutdown=%d, collectingDone=%d\n", shutdown.load(), modelTrainer.IsCollectingDone());
+      //printf("!!!!!!!!!!!!!!!!!\n");
       if (shutdown.load()) break;
       lk.unlock();
       modelTrainer.MakingMLModel();
@@ -323,8 +323,8 @@ int main(int argc, char *argv[]) {
   {
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
-    printf("seconds: %ld micro seconds: %ld\n",
-        current_time.tv_sec, current_time.tv_usec);
+    //printf("seconds: %ld micro seconds: %ld\n",
+    //    current_time.tv_sec, current_time.tv_usec);
   }
   trace = fopen(wk_name, "r");
   while (fgets(line, sizeof(line), trace))

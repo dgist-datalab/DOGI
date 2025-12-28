@@ -279,22 +279,19 @@ uint64_t Manager::PrintRealStats() {
   double Throughput = mTotalUserWrites * 4096. / ((uint64_t)current_time.tv_sec - mStartTime);
 
   std::cout << "============== Per 20GiB Info ==============" << std::endl;
-  std::cout << "GlobalTimeStamp:" << globalTimestamp << std::endl;
+  //std::cout << "GlobalTimeStamp:" << globalTimestamp << std::endl;
   printf("Per20GiB Throughput: %.3f MiB/s, Total Throughput: %.3f MiB\n", mTmpThroughput/1024/1024., Throughput/1024./1024.);
   printf("UserWrite: %.1f GiB\n", mTotalUserWrites * 4096 / 1024 / 1024 / 1024.0); 
-  printf("GCWrite: %.1f GiB\n", mTotalGcWrites * 4096 / 1024 / 1024 / 1024.0); 
+  //printf("GCWrite: %.1f GiB\n", mTotalGcWrites * 4096 / 1024 / 1024 / 1024.0); 
   printf("Per20GiB WAF: %.3f, Total WAF: %.3f\n", (double)(mTmpUserWrites+mTmpGcWrites)/(mTmpUserWrites), (double)(mTotalUserWrites+mTotalGcWrites)/mTotalUserWrites);
 
   // HotFilter -> G0 user write share
-  double per_g0_pct = (mTmpUserWrites > 0) ? (100.0 * (double)mTmpUserWritesG0 / (double)mTmpUserWrites) : 0.0;
-  double total_g0_pct = (mTotalUserWrites > 0) ? (100.0 * (double)mTotalUserWritesG0 / (double)mTotalUserWrites) : 0.0;
-  printf("Per20GiB HotFilter->G0 UserWrites: %lu (%.2f%%)\n", mTmpUserWritesG0, per_g0_pct);
-  printf("Total   HotFilter->G0 UserWrites: %lu (%.2f%%)\n", mTotalUserWritesG0, total_g0_pct);
+  //double per_g0_pct = (mTmpUserWrites > 0) ? (100.0 * (double)mTmpUserWritesG0 / (double)mTmpUserWrites) : 0.0;
+  //double total_g0_pct = (mTotalUserWrites > 0) ? (100.0 * (double)mTotalUserWritesG0 / (double)mTotalUserWrites) : 0.0;
+  //printf("Per20GiB HotFilter->G0 UserWrites: %lu (%.2f%%)\n", mTmpUserWritesG0, per_g0_pct);
+  //printf("Total   HotFilter->G0 UserWrites: %lu (%.2f%%)\n", mTotalUserWritesG0, total_g0_pct);
   for (int i = 0; i < NumGroup; i++) {
-    //if (strcmp(PlacementName, "DOGI")== 0){
-       // if (i == NumGroup - 1) continue;
-    //}
-    printf("Class %d[%d]: %.3f (Erase: %ld) (Age: %.3f)\n", i, ClassSegmentNum[i], ClassValidBlock[i]/ClassEraseNum[i], ClassEraseNum[i], ClassAgeSum[i]/ClassEraseNum[i]); 
+    printf("Group %d[%d]: %.3f (Erase: %ld) (Age: %.3f)\n", i, ClassSegmentNum[i], ClassValidBlock[i]/ClassEraseNum[i], ClassEraseNum[i], ClassAgeSum[i]/ClassEraseNum[i]); 
   }
   std::cout << "============================================" << std::endl;
 //  std::cout << "Stat: " << nInvalidBlocks << " " << nBlocks - nInvalidBlocks << std::endl;

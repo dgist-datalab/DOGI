@@ -59,9 +59,10 @@ void ModelTrainer::_SaveTrainingData(std::array<uint64_t, 6>* features, uint64_t
             if (!sampled_lba.set(static_cast<uint32_t>((*features)[0]))) {
                 sampled_lba_num++;
             }
-            if (number_of_samples % 50000 == 0) {
+            if (number_of_samples % 100000 == 0) {
                 printf("Saved %u samples so far.\n", number_of_samples);
-                printf("[feature %llu] lba=%u prevLba=%u interval=%u freq_bits=%u freq_bitcnt=%u seg_freq=%lu\n",
+                /*
+		printf("[feature %llu] lba=%u prevLba=%u interval=%u freq_bits=%u freq_bitcnt=%u seg_freq=%lu\n",
                        (unsigned long long)number_of_samples,
                        static_cast<uint32_t>((*features)[0]),
                        static_cast<uint32_t>((*features)[1]),
@@ -69,6 +70,7 @@ void ModelTrainer::_SaveTrainingData(std::array<uint64_t, 6>* features, uint64_t
                        static_cast<uint32_t>((*features)[3]),
                        static_cast<uint32_t>((*features)[4]),
                        static_cast<uint64_t>((*features)[5]));
+		*/
             }
         } else _SaveTrueLBAData((*features)[0], featuretime, false);
         number_of_nonhot++;
@@ -110,8 +112,8 @@ void ModelTrainer::_SaveTrueLBAData(uint64_t LBA, uint64_t featuretime, bool for
     }
 	if (number_of_samples >= _max_sample_num && number_of_true_lbas >= max_true_lba_num) {
 		//close the file
-        printf("!!!Reached maximum true LBA number. Closing true LBA file!!!\n");
-        printf("- Time after last saved feature: %llu - %llu = %llu\n",
+        printf("[Trainer] Reached maximum true LBA number. Closing true LBA file\n");
+	printf("- Time after last saved feature: %llu - %llu = %llu\n",
                (unsigned long long)featuretime,
                (unsigned long long)last_feature_time,
                (unsigned long long)(featuretime - last_feature_time));
@@ -120,7 +122,6 @@ void ModelTrainer::_SaveTrueLBAData(uint64_t LBA, uint64_t featuretime, bool for
                (unsigned long long)first_feature_time,
                (unsigned long long)last_feature_time);
         printf("- Interval: %llu\n", (unsigned long long)(last_feature_time - first_feature_time));
-
         // IMPORTANT: feature_file may still be open if we reached true-LBA limit
         // before reaching _max_sample_num. If we don't close it, the next
         // _MakingNewFile() can fail to open *_sampled.csv (especially in release
@@ -241,12 +242,13 @@ void ModelTrainer::_CleanUp() {
 void ModelTrainer::MakingMLModel() {
     // Implement logic to complete the training dataset
     // print collected dataset info
-    printf("Training dataset collection completed.\n");
+    printf("[Trainer] Training dataset collection completed.\n");
+    /*
     printf("Total sampled non-hot blocks: %u\n", number_of_samples);
     printf("Total true LBAs collected: %u\n", number_of_true_lbas);
     printf("Total unique sampled LBAs: %u\n", sampled_lba_num);
     printf("Total overflowed true LBA buffers: %u\n", number_of_overflowed_true_lbas);
-
+    */
     _CompleteTrainingDataset();
 
     // Ensure the completed training CSV is fully written before running Python.
@@ -275,7 +277,9 @@ void ModelTrainer::MakingMLModel() {
     };
 
     const std::string script_path = "../DOGI-Train/model_trainer.py";
-    const std::string cmd = "python3 " + shell_quote(script_path) + " " + shell_quote(completed_file_path);
+    //const std::string cmd = shell_quote(script_path) + " " + shell_quote(completed_file_path);
+    const std::string cmd = "../venv/bin/python3 " + shell_quote(script_path) + " " + shell_quote(completed_file_path);
+    //const std::string cmd = "python3 " + shell_quote(script_path) + " " + shell_quote(completed_file_path);
     printf("[ModelTrainer] Running: %s\n", cmd.c_str());
     int rc = std::system(cmd.c_str());
     if (rc != 0) {
@@ -336,8 +340,8 @@ retry:
            static_cast<uint32_t>(feature_tokens[5]),
            static_cast<uint64_t>(feature_tokens[6]));
     */
-    if (FILL_MAXTIME) printf("!!! FILL_MAXTIME is ON !!!\n");
-    else printf("!!! FILL_MAXTIME is OFF !!!\n");
+    //if (FILL_MAXTIME) printf("!!! FILL_MAXTIME is ON !!!\n");
+    //else printf("!!! FILL_MAXTIME is OFF !!!\n");
     uint64_t feature_time = static_cast<uint64_t>(feature_tokens[0]);
     uint32_t feature_lba = static_cast<uint32_t>(feature_tokens[1]);
 
@@ -384,7 +388,7 @@ retry:
         }
         uint32_t truelba_target = truelba_tokens[1];
 
-
+	/*
         if (truelba_lines_read%50000==0) {
             printf("Processed %d true LBA lines so far.\n", truelba_lines_read);
             printf("- TrueLBA linenum: %d, time: %llu | Feature linenum: %d, time: %llu\n",
@@ -395,7 +399,7 @@ retry:
             printf("- Removed lines so far: %d\n", removed_lines);
             printf("- Written lines so far: %d\n", written_lines);
         }
-
+	*/
         //error check
         assert(truelba_time >= feature_time);
 
