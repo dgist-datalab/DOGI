@@ -251,7 +251,7 @@ cd build
 This runs the full DOGI pipeline — it initializes the environment, replays the workload trace, trains the ML model (if needed), and executes DOGI’s data placement algorithm on top of the log-structured system.
 In our test environment, the full execution completes in about **30 minutes**.
 
----
+
 
 ## Code Structure
 
