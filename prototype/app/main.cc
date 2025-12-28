@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
       configDone.store(ok);
       APPLY_ML = 1;
       //APPLY_ML = 0;
-      printf("[GCONF] optimizer %s (util=%.4f)\n", ok ? "success" : "failed", utilization);
+      printf("[GCONF] group optimizer %s\n", ok ? "success" : "failed");
     }
   });
   

@@ -314,9 +314,11 @@ std::vector<int> BuildRelocation(const std::unordered_map<int, std::vector<int>>
     }
     target[c] = toG;
   }
+  /*
   for (int i = 0; i < 10; i ++) {
-	printf("TaregetGC[%d]: G%d\n", i, target[i]);	
+	printf("TargetGC[%d]: G%d\n", i, target[i]);	
   } 
+  */
   return target;
 }
 
@@ -598,6 +600,7 @@ bool OptimizeAndApplyGroupConfig(const std::string &modelName,
       bestByK[er.K] = er;
     }
   }
+  /*
   printf("==== Best configuration per K ====\n");
   for (int k = 1; k <= kMaxGroups; ++k) {
     auto it = bestByK.find(k);
@@ -613,6 +616,7 @@ bool OptimizeAndApplyGroupConfig(const std::string &modelName,
     }
     printf("]\n");
   }
+  */
 
   // filter traffic
   EvalResult chosen;
@@ -662,7 +666,7 @@ bool OptimizeAndApplyGroupConfig(const std::string &modelName,
     g_mList = chosen.mList;
     g_firstGcTarget = relocation;
   }
-  printf("[GCONF] applied from optimizer: K=%d waf=%.4f m_list=", chosen.K, chosen.waf);
+  printf("[GCONF] applied from group optimizer: K=%d waf=%.4f m_list=", chosen.K, chosen.waf);
   for (size_t i = 0; i < chosen.mList.size(); ++i) {
     printf("%s%d", (i==0?"[":","), chosen.mList[i]);
   }
@@ -670,8 +674,8 @@ bool OptimizeAndApplyGroupConfig(const std::string &modelName,
   for (int gi = 1; gi <= chosen.K; ++gi) {
     printf("%s%d", (gi==1?"":","), chosen.BIR[gi]);
   }
-  printf("]\n");
-  printf("naive_start: %d\n", naive_start);
+  printf("] (Unit: Segment)\n");
+  //printf("naive_start: %d\n", naive_start);
   return true;
 }
 

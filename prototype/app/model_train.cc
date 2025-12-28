@@ -113,15 +113,18 @@ void ModelTrainer::_SaveTrueLBAData(uint64_t LBA, uint64_t featuretime, bool for
 	if (number_of_samples >= _max_sample_num && number_of_true_lbas >= max_true_lba_num) {
 		//close the file
         printf("[Trainer] Reached maximum true LBA number. Closing true LBA file\n");
-	printf("- Time after last saved feature: %llu - %llu = %llu\n",
+	/*printf("- Time after last saved feature: %llu - %llu = %llu\n",
                (unsigned long long)featuretime,
                (unsigned long long)last_feature_time,
                (unsigned long long)(featuretime - last_feature_time));
-        last_feature_time = featuretime;
-        printf("- First feature time: %llu, Last feature time: %llu\n",
+        */
+	last_feature_time = featuretime;
+        /*
+	printf("- First feature time: %llu, Last feature time: %llu\n",
                (unsigned long long)first_feature_time,
                (unsigned long long)last_feature_time);
-        printf("- Interval: %llu\n", (unsigned long long)(last_feature_time - first_feature_time));
+        */
+	//printf("- Interval: %llu\n", (unsigned long long)(last_feature_time - first_feature_time));
         // IMPORTANT: feature_file may still be open if we reached true-LBA limit
         // before reaching _max_sample_num. If we don't close it, the next
         // _MakingNewFile() can fail to open *_sampled.csv (especially in release
@@ -444,6 +447,7 @@ retry:
             //check if feature_line is valid
             if (feature_line.empty()) {
                 //process finished
+		/*
                 printf("No more feature lines to read, ending process.\n");
                 printf("- truelba lines read: %d\n", truelba_lines_read);
                 printf("- feature lines read: %d\n", feature_lines_read);
@@ -451,7 +455,8 @@ retry:
                           removed_lines);
                 printf("- Removed lines so far: %d\n", removed_lines);
                 printf("- Written lines so far: %d\n", written_lines);
-                completed_file.flush();
+                */
+		completed_file.flush();
                 completed_file.close();
                 return;
             }
