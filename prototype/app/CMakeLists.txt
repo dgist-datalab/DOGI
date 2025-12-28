@@ -1,0 +1,8 @@
+add_executable(app main.cc classifier.cc freq_features.cc group_config.cc group_optimizer.cc mlp_inference.cc model_train.cc)
+target_compile_features(app PRIVATE cxx_std_17)
+target_include_directories(app PRIVATE ${CMAKE_SOURCE_DIR})
+find_library(OPENBLAS_LIB openblas)
+if (NOT OPENBLAS_LIB)
+  message(FATAL_ERROR "openblas not found")
+endif()
+target_link_libraries(app PRIVATE logstore buse rt pthread ${OPENBLAS_LIB})
