@@ -3,6 +3,7 @@
 #include <float.h>
 #include <iostream>
 #include <cstring>
+#include <array>
 #include "src/selection/dogiselect.h"
 #include "src/logstore/manager.h"
 #include "app/global.h"
