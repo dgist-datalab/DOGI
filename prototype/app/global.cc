@@ -9,3 +9,10 @@ uint32_t NumGroup  = 6;
 uint64_t BIR[10]   = {0,};
 uint32_t naive_start = 1;
 int APPLY_ML = 0;
+
+const char kZnsDevicePath[] = "/dev/nvme2n2";
+const char kZbdDeviceName[] = "nvme2n2";
+
+const uint64_t kBlockBytes    = 4096;
+const uint64_t kSegmentBlocks = 16384; // blocks per segment
+const uint64_t kSegmentBytes  = kBlockBytes * kSegmentBlocks;

@@ -1,5 +1,8 @@
 #include "app/classifier.h"
 
+const uint64_t HotIntervalTracker::kSegmentBlocks = ::kSegmentBlocks;
+const uint64_t HotIntervalTracker::kIntervalUnit  = HotIntervalTracker::kSegmentBlocks * 4;
+
 HotIntervalTracker& HotIntervalTracker::Instance() {
   static HotIntervalTracker instance;
   return instance;

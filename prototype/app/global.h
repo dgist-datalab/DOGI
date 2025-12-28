@@ -15,11 +15,14 @@ extern uint32_t naive_start;
 extern uint64_t BIR[10];
 extern int APPLY_ML;
 
-// Segment/Block size constants
-inline constexpr uint64_t kBlockBytes = 4096;
-inline constexpr uint64_t kSegmentBlocks = 16384;           // blocks per segment
-//inline constexpr uint64_t kSegmentBlocks = 65536;           // blocks per segment
-inline constexpr uint64_t kSegmentBytes  = kBlockBytes * kSegmentBlocks;
+// Device paths/names for zoned backend.
+extern const char kZnsDevicePath[];
+extern const char kZbdDeviceName[];
+
+// Segment/Block size constants (configured in global.cc)
+extern const uint64_t kBlockBytes;
+extern const uint64_t kSegmentBlocks;         // blocks per segment
+extern const uint64_t kSegmentBytes;          // bytes per segment
 
 // Derived thresholds based on logical size.
 inline uint64_t GetPassTimeBlocks() {

@@ -22,8 +22,8 @@ public:
   void ResetOnUserWrite(uint32_t blockAddr);
   void AccumulateGcAge(uint32_t blockAddr, uint64_t segmentAgeInBlocks);
 
-  static constexpr uint64_t kSegmentBlocks = ::kSegmentBlocks; // from global config
-  static constexpr uint64_t kIntervalUnit = kSegmentBlocks * 4; // age unit
+  static const uint64_t kSegmentBlocks; // from global config
+  static const uint64_t kIntervalUnit;  // age unit
 
   static constexpr size_t kCapacity = 128ull * 1024ull * 1024ull; // matches Filter
 

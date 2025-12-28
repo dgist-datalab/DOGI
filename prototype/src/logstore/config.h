@@ -20,7 +20,7 @@ public:
   uint64_t    numValidBlocks = 0;
 
   // For zenfs and zoned storage backend
-  std::string zbdName = "nvme2n2";
+  std::string zbdName = kZbdDeviceName;
   std::string zenFsAuxPath = "/tmp/aux_path";
 
   // For local file system backend

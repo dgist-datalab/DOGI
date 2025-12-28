@@ -88,7 +88,8 @@ static std::pair<std::string, std::string> ResolveModelDirAndName() {
 
 int main(int argc, char *argv[]) {
 //  Config::getInstance().selection = std::string(argv[1]);
-  system("zbd reset /dev/nvme2n2");
+  std::string resetCmd = std::string("zbd reset ") + kZnsDevicePath;
+  system(resetCmd.c_str());
   printf("[SYSTEM] ZNS-SSD RESET SUCCESS\n");
   // Placement/selection are driven by the first CLI argument (e.g., DOGI); adjust here when wiring new policies.
   Config::GetInstance().placement = std::string(argv[1]);
@@ -97,15 +98,19 @@ int main(int argc, char *argv[]) {
 	Config::GetInstance().selection = "DogiSelect";
   }
   else Config::GetInstance().selection = "CostBenefit";
+  printf("==============================\n");
+  printf("             Setup            \n");
+  printf("==============================\n");
   printf("Configuration Info\n");
   printf("PlacementName: %s\n", PlacementName);
   printf("Trace Path: %s\n", wk_name);
   printf("GpThreshold: %.4f, OpRatio: %.4f, LogicalSizeGb: %d\n", GpThreshold, OpRatio, LogicalSizeGb);
+  printf("==============================\n");
   
   // hotThreshold still taken from argv if provided; default to 0 otherwise.
   uint64_t hotThreshold = 2;
   BIR[0] = hotThreshold * kSegmentBlocks;
-  printf("HotThreshold: %d\n", (int)hotThreshold);
+  //printf("HotThreshold: %d\n", (int)hotThreshold);
   /*
   if(strcmp(PlacementName, "DOGI")==0){
     std::vector<uint64_t> birValues;

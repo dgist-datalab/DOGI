@@ -17,14 +17,13 @@
 #include <mutex>
 
 #include "app/group_config.h"
-#include "app/classifier.h" // for HotIntervalTracker::kSegmentBlocks
 #include "app/global.h"
 
 namespace {
 
 // Constants mirroring the Python reference.
 constexpr int    kMaxGroups = 4;
-constexpr int    kSegBlocks = static_cast<int>(kSegmentBlocks);
+const int        kSegBlocks = static_cast<int>(kSegmentBlocks);
 constexpr int    kPageBytes = 4096;
 constexpr double kPhysLogicalFactor = 1.1; // physical = logical * 1.1
 constexpr double kOverheadPerGroupSeg = 0.5;
