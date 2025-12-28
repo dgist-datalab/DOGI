@@ -274,6 +274,75 @@ DOGI’s implementation spans the `app` and `src` directories. Below is a compac
 * **`group_config.cc`** – Applies group configuration to the system.
 * **`src/selection/dogiselect.cc`** – Selects GC victims to satisfy the target **block invalidation time range (BIR)** under the configured groups.
 
+
 ## Results
 
+During the experiment, you can observe that DOGI trains a prediction model, determines a group configuration using the trained model, and uses the inference results to place blocks into appropriate groups.
+
+The following result is from an example run:
+* **Experimental Setup**
+```
+==============================
+             Setup            
+==============================
+Configuration Info
+PlacementName: DOGI
+Trace Path: /home/ae/dogi-prototype/prototype/app/workload/test-fio-small
+GpThreshold: 0.0910, OpRatio: 0.1000, LogicalSizeGb: 8
+==============================
+Placement algorithm: DOGI
+ZenFS file system created. Free space: 12032 MB
+Selection algorithm: DogiSelect
+```
+
+- **WAF and throughput statistics**: The prototype periodically prints WAF and throughput statistics. It reports overall WAF and throughput, as well as per-20 GiB user write statistics. For every 20 GiB user write, it shows:
+  - WAF and throughput
+  - Average valid block ratio during GC for each group
+  - Number of segments belonging to each group
+  - Number of erased segments
+  - Average age of segments selected for GC
+```
+============== Per 20GiB Info ==============
+Per20GiB Throughput: 145.248 MiB/s, Total Throughput: 178.865 MiB
+UserWrite: 40.0 GiB
+Per20GiB WAF: 2.012, Total WAF: 1.783
+Group 0[1]: 0.093 (Erase: 257) (Age: 38783.125)
+Group 1[4]: 0.630 (Erase: 87) (Age: 232053.471)
+Group 2[4]: 0.725 (Erase: 57) (Age: 543273.544)
+Group 3[6]: 0.774 (Erase: 40) (Age: 888594.775)
+Group 4[28]: 0.808 (Erase: 64) (Age: 1403450.734)
+Group 5[86]: 0.873 (Erase: 139) (Age: 3397599.173)
+============================================
+```
+
+* **Training information**: Once a sufficient number of samples is collected, DOGI starts model training.
+In the current configuration, about 10% of total blocks are sampled, and when approximately 400K samples are collected, training is triggered. During this phase, users can observe per-epoch loss and accuracy:
+
+```
+[Trainer] Reached maximum true LBA number. Closing true LBA file
+[Trainer] Training dataset collection completed.
+[ModelTrainer] Running: ../venv/bin/python3 '../DOGI-Train/model_trainer.py' '../DOGI-Train/0_training.csv'
+Model training start
+Epoch [1/15] Train Loss: 2.1466, Train Acc: 17.78% | Val Loss: 2.0736, Val Acc: 20.88%
+Epoch [2/15] Train Loss: 2.0801, Train Acc: 20.65% | Val Loss: 2.0301, Val Acc: 22.23%
+Epoch [3/15] Train Loss: 2.0520, Train Acc: 21.84% | Val Loss: 2.0114, Val Acc: 22.44%
+Epoch [4/15] Train Loss: 2.0348, Train Acc: 22.62% | Val Loss: 1.9964, Val Acc: 22.69%
+...
+Model training completed, and export completed
+[MLP] Reloaded trained model from ../DOGI-Train/TrainedModel/Model0
+```
+
+* **Group configuration and GC relocation information**: After training completes, the **Group Optimizer** selects a group configuration and GC relocation policy that are expected to provide low WAF.
+It reports the predicted WAF, group configuration, and each group’s BIR.
+For example, if `m_list=[0,3,4,10]`, then categories `c1–c3` are assigned to `G1`, `c4` to `G2`, and `c5–c10` to `G3`.
+
+It also reports GC relocation behavior, showing how blocks predicted in each category should be reassigned at their first GC event:
+
+```
+==== Selected configuration ====
+WAF=1.7446 K=3 m_list=[0,2,4,10] BIR=[10,38,577]
+GC relocation (category -> first GC group): c1->G2 c2->G2 c3->G3 c4->G3 c5->G3 c6->G3 c7->G3 c8->G3 c9->G3 c10->G3 
+[GCONF] applied from group optimizer: K=3 waf=1.7446 m_list=[0,2,4,10] BIR=[10,38,577] (Unit: Segment)
+[GCONF] group optimizer success
+```
 
