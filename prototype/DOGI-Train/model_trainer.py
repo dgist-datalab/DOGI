@@ -242,6 +242,18 @@ def save_thresholds_for_bir(thresholds: np.ndarray, model_suffix: str):
 
     print(f"Saved BIR thresholds to: {out_path}")
 
+
+def save_hot_stub(model_suffix: str, hot_size: int = 3, hot_invalid: float = 0.95, p_hot: float = 0.80):
+    """Save a HOT config stub (one line: size invalid_ratio hot_traffic)."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    out_dir = os.path.normpath(os.path.join(script_dir, '..', 'DOGI-Gconf', 'DOGI-HOT'))
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, f"Model{model_suffix}")
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(f"{hot_size} {hot_invalid} {p_hot}\n")
+    print(f"Saved HOT stub to: {out_path}")
+
+
 def load_and_prepare_data(csv_path, thresholds=DEFAULT_THRESHOLDS, train_ratio=0.9):
     """
     Load CSV data and prepare train/validation splits.
@@ -774,6 +786,8 @@ def main():
         
         # Save thresholds in DOGI-BIR format (text, PPS-scaled, no decimals)
         save_thresholds_for_bir(thresholds_used, model_suffix)
+        # Save HOT stub alongside PLog/BIR outputs for the optimizer.
+        save_hot_stub(model_suffix)
         
         # Save model for C++ inference
         save_model_for_cpp_inference(model, scaler, thresholds_used, output_dir)
