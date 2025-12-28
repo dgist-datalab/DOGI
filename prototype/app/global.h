@@ -5,7 +5,6 @@
 #include <stdio.h>   // FILE*
 
 // Global configuration knobs shared across app components.
-extern uint64_t SwWp;
 extern char *PlacementName;
 extern double GpThreshold;
 extern double OpRatio;

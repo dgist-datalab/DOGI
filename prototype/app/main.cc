@@ -60,7 +60,6 @@ struct BufferSlot {
 int SW = 0;
 FILE *trace;
 char *PlacementName;
-uint64_t SwWp = 0;
 // Configurable compile-time defaults
 double GpThreshold = 0.091;   // for GC (how many invalid pages)
 double OpRatio     = 0.10;   // over-provisioning ratio (physical = logical * (1 + OpRatio))
@@ -70,9 +69,9 @@ char wk_name[128]  = "/home/nkgy/fio_bench/test-fio-small";
 uint64_t PassTime = LogicalSizeGb * 1000 * 1000 * 1000ull / 4096;
 uint32_t NumGroup = 6;
 uint64_t BIR[10] = {0,};
-uint32_t naive_start = 1;
+uint32_t naive_start = 1; 
 int APPLY_ML = 0;
-std::string latestModelName = "ycsb-a"; // default fallback for group config/PLog files
+std::string latestModelName = ""; // default fallback for group config/PLog files
 std::string latestModelDir;             // last successfully loaded model dir (empty if none)
 
 // Resolve model directory and name (basename) using env or latest pointer.
