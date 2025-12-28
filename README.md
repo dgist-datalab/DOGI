@@ -136,7 +136,7 @@ Edit `/etc/default/grub` and modify:
 
 ```text
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nopat"
-GRUB_CMDLINE_LINUX="memmap=12G\$10G isolcpus=0,1 intremap=off"
+GRUB_CMDLINE_LINUX="memmap=12G\\\$10G isolcpus=0,1 intremap=off"
 ```
 
 Then update GRUB and reboot:
@@ -173,7 +173,7 @@ Edit `ssd_config.h` (around line 199) to set the zone size:
 
 ```bash
 make
-sudo insmod ./nvmev.ko memmap_start=10G memmap_size=12225M cpus=0,1
+sudo insmod ./nvmev.ko \ memmap_start=10G \ memmap_size=12225M \ cpus=0,1
 nvme list
 ```
 
