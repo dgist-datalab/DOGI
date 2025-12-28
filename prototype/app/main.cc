@@ -57,20 +57,7 @@ struct BufferSlot {
   }
 };
 
-int SW = 0;
 FILE *trace;
-char *PlacementName;
-// Configurable compile-time defaults
-double GpThreshold = 0.091;   // for GC (how many invalid pages)
-double OpRatio     = 0.10;   // over-provisioning ratio (physical = logical * (1 + OpRatio))
-int LogicalSizeGb  = 8;    // logical workload size in GB
-char wk_name[128]  = "/home/nkgy/fio_bench/test-fio-small";
-//char wk_name[128]  = "/trace/real_world/ycsb-u100";
-uint64_t PassTime = LogicalSizeGb * 1000 * 1000 * 1000ull / 4096;
-uint32_t NumGroup = 6;
-uint64_t BIR[10] = {0,};
-uint32_t naive_start = 1; 
-int APPLY_ML = 0;
 std::string latestModelName = ""; // default fallback for group config/PLog files
 std::string latestModelDir;             // last successfully loaded model dir (empty if none)
 
@@ -185,6 +172,7 @@ int main(int argc, char *argv[]) {
   uint64_t logicalTime = 0;
   uint64_t featureTime = 0;
   uint64_t totline = 0;
+  const uint64_t passTimeBlocks = GetPassTimeBlocks();
   // Hot threshold is provided in units of segment_size*4 (same as tracker).
   DogiHotClassifier hotClassifier(hotThreshold);
   uint32_t prevLba = 0;
@@ -355,11 +343,11 @@ int main(int argc, char *argv[]) {
 	uint32_t lba = (uint32_t)(start / 4096);
     logicalTime += 1;
     uint64_t segmentAge = logstore->GetSegmentAge(lba);
-    if (logicalTime > PassTime) {
+    if (logicalTime > passTimeBlocks) {
         FrozenFilterManager::Instance().Update(lba);
     }
     auto hotResult = hotClassifier.Classify(lba, segmentAge);
-    bool isHot = (logicalTime > PassTime) ? hotResult.isHot : false;
+    bool isHot = (logicalTime > passTimeBlocks) ? hotResult.isHot : false;
     uint64_t interval = static_cast<uint64_t>(hotResult.interval);
     BufferSlot &bufSlot = buffers[activeIdx];
     bufSlot.writes.push_back({start, (size_t)length, lba, interval, isHot});
