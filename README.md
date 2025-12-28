@@ -272,6 +272,8 @@ DOGI’s implementation spans the `app` and `src` directories. Below is a compac
 
 * **`group_optimizer.cc`** – Determines group configuration and GC relocation policy.
 * **`group_config.cc`** – Applies group configuration to the system.
-* **`src/selection/dogiselect.cc`** – Selects GC victims to satisfy the target **Block Invalidation Rate (BIR)** under the configured groups.
+* **`src/selection/dogiselect.cc`** – Selects GC victims to satisfy the target **block invalidation time range (BIR)** under the configured groups.
 
 ## Results
+
+
