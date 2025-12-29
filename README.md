@@ -55,20 +55,7 @@ There are three major steps to install and run the DOGI prototype:
 Install system packages required by RocksDB, ZenFS, and the DOGI prototype:
 
 ```bash
-sudo apt install git build-essential
-sudo apt-get install libzbd-dev
-sudo apt-get install zbd-utils
-sudo apt-get install libgflags-dev
-sudo apt install pkg-config
-sudo apt install libopenblas-dev
-sudo apt-get install libsnappy-dev
-sudo apt-get install zlib1g-dev
-sudo apt-get install libbz2-dev
-sudo apt-get install libgoogle-perftools-dev
-sudo apt-get install liblz4-dev libzstd-dev
-sudo apt install nvme-cli
-sudo apt install python3.12-venv
-sudo apt install cmake
+sudo apt install git build-essential libzbd-dev zbd-utils libgflags-dev pkg-config libopenblas-dev libsnappy-dev zlib1g-dev libbz2-dev libgoogle-perftools-dev liblz4-dev libzstd-dev nvme-cli python3.12-venv cmake
 ```
 
 ### 1. Build ZenFS Environment
