@@ -43,6 +43,7 @@ The setup process for these components is described below.
 
 ## Installation & Compilation
 
+Since our experiments require modifying GRUB and inserting kernel modules via insmod, we highly recommend running them in a virtual machine environment.
 There are three major steps to install and run the DOGI prototype:
 
 1. Build the **ZenFS environment**
