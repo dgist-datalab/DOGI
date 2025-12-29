@@ -184,7 +184,7 @@ From the output of `nvme list`, identify the ZNS device name (e.g., `/dev/nvme0n
 #### 3-1. Clone DOGI prototype and download test workload
 
 ```bash
-git clone https://github.com/sungkyun123/dogi-prototype.git
+git clone https://github.com/dgist-datalab/DOGI.git
 wget https://zenodo.org/record/10409599/files/test-fio-small
 cd dogi-prototype/prototype
 ```
