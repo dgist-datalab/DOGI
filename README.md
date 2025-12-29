@@ -93,13 +93,13 @@ cd ../../
 #### 1-3. Build RocksDB with ZenFS plugin
 
 ```bash
-DEBUG_LEVEL=0 ROCKSDB_PLUGINS=zenfs DISABLE_WARNING_AS_ERROR=1 \
-EXTRA_CXXFLAGS="-Wno-error=unused-parameter -include cstdint" \
+export DEBUG_LEVEL=0
+export ROCKSDB_PLUGINS=zenfs
+export DISABLE_WARNING_AS_ERROR=1
+export EXTRA_CXXFLAGS="-Wno-error=unused-parameter -include cstdint"
 make -j48 db_bench
 
-sudo DEBUG_LEVEL=0 ROCKSDB_PLUGINS=zenfs DISABLE_WARNING_AS_ERROR=1 \
-EXTRA_CXXFLAGS="-Wno-error=unused-parameter" \
-make install
+sudo -E make install
 ```
 
 #### 1-4. Build ZenFS utility
