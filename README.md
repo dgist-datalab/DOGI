@@ -153,7 +153,7 @@ git clone https://github.com/snu-csl/nvmevirt
 cd nvmevirt
 ```
 
-Edit **KBuild** to enable ZNS:
+Edit **Kbuild** to enable ZNS:
 
 ```text
 #CONFIG_NVMEVIRT_NVM := y
