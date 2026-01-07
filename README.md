@@ -174,7 +174,7 @@ From the output of `nvme list`, identify the ZNS device name (e.g., `/dev/nvme0n
 ```bash
 git clone https://github.com/dgist-datalab/DOGI.git
 wget https://zenodo.org/record/10409599/files/test-fio-small
-cd dogi-prototype/prototype
+cd DOGI/prototype
 ```
 
 The details of the trace workloads are described in the MiDAS repository:
